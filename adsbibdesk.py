@@ -619,7 +619,7 @@ class ADSConnector(object):
         - old style (astro-ph/YYMMNNN)
         :return: True if ADS page is recovered
         """
-        arxivPattern = re.compile('(\d{4,6}.\d{4,6}|astro\-ph/\d{7})')
+        arxivPattern = re.compile('^(arXiv:){0,1}(\d{4,6}\.\d{4,6}|astro\-ph/\d{7})')
         arxivMatches = arxivPattern.findall(self.token)
         if len(arxivMatches) == 1:
             self.arxivID = arxivMatches[0]
@@ -1014,8 +1014,8 @@ class ADSHTMLParser(HTMLParser):
         if data.strip() == 'Comment:':
             self.get_comment = False
         #store arXiv identifier
-        if re.search('arXiv:(\d{4,6}.\d{4,6}|astro\-ph/\d{7})', data) is not None:
-            self.arxivid = re.search('arXiv:(\d{4,6}.\d{4,6}|astro\-ph/\d{7})', data).group(1)
+        if re.search('arXiv:(\d{4,6}\.\d{4,6}|astro\-ph/\d{7})', data) is not None:
+            self.arxivid = re.search('arXiv:(\d{4,6}\.\d{4,6}|astro\-ph/\d{7})', data).group(1)
 
     #handle html entities
     def handle_entityref(self, name):
