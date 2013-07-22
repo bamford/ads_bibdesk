@@ -540,8 +540,11 @@ class PDFDOIGrabber(object):
         if os.path.exists(jsonPath):
             os.remove(jsonPath)
         sp.call('pdf2json -q "%s" "%s"' % (pdfPath, jsonPath), shell=True)
-        data = open(jsonPath, 'r').read()
-        doiMatches = self.pattern.findall(data)
+        try:
+            data = open(jsonPath, 'r').read()
+            doiMatches = self.pattern.findall(data)
+        except IOError:
+            doiMatches = False
         if os.path.exists(jsonPath):
             os.remove(jsonPath)
 
