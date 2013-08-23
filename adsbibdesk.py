@@ -524,7 +524,11 @@ def hasAnnotations(f):
 
 def getRedirect(url):
     """Utility function to intercept final URL of HTTP redirection"""
-    return urllib2.urlopen(url).geturl()
+    import httplib
+    url = urlparse.urlsplit(url)
+    conn = httplib.HTTPConnection(url.netloc)
+    conn.request('GET', url.path + '?' + url.query)
+    return conn.getresponse().getheader('Location')
 
 
 class PDFDOIGrabber(object):
